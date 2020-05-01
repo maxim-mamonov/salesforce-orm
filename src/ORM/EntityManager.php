@@ -104,7 +104,7 @@ class EntityManager
         $array = $this->mapper->toArray($entity);
         $builder = new Builder();
         $query = $builder->from($objectType)->select(array_keys($array))->where($conditions)->order($orders)->limit($limit)->getQuery();
-        $result = $this->connection->getClient()->query($query);
+        $result = $this->connection->getClient()->query($query) ?: [];
         $collections = $this->resultToCollection($result, $className, $lazy);
 
         return $collections;
@@ -133,7 +133,7 @@ class EntityManager
         $array = $this->mapper->toArray($entity);
         $builder = new Builder();
         $query = $builder->from($objectType)->select(array_keys($array))->order($orders)->getQuery();
-        $result = $this->connection->getClient()->query($query);
+        $result = $this->connection->getClient()->query($query) ?: [];
         $collections = $this->resultToCollection($result, $className, $lazy);
 
         return $collections;

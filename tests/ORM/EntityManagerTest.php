@@ -247,4 +247,18 @@ class EntityManagerTest extends TestCase
         $RelationHandleInterface->expects($this->once())->method('handle');
         $this->entityManager->eagerLoad($account);
     }
+
+    public function testFailToFind()
+    {
+        $sfClient = $this->createMock(Client::class);
+        $sfClient->method('query')->willReturn(false);
+
+        $this->connection->setClient($sfClient);
+        $class = Account::class;
+        $result = $this->entityManager->findBy($class);
+        $this->assertEmpty($result);
+
+        $result = $this->entityManager->findAll($class);
+        $this->assertEmpty($result);
+    }
 }
