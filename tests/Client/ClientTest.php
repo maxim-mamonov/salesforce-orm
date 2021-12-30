@@ -45,7 +45,7 @@ class ClientTest extends TestCase
      * @throws \Salesforce\Cache\Exception\CacheException
      * @throws \Salesforce\Client\Exception\ConfigException
      */
-    public function setUp(LoggerInterface $logger = null)
+    public function setUp(LoggerInterface $logger = null): void
     {
         parent::setUp();
         $this->result = new Result();
@@ -65,7 +65,6 @@ class ClientTest extends TestCase
         $this->client->setCache($this->cache);
         $this->cache = $this->client->getCache();
         $this->config = $this->client->setConfig($this->config);
-        $this->config = $this->client->getConfig();
     }
 
     /**

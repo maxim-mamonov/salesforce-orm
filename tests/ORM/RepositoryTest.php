@@ -14,7 +14,7 @@ class RepositoryTest extends TestCase
     /** @var Repository */
     protected $repository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->entityManager = $this->createMock(EntityManager::class);
@@ -75,18 +75,20 @@ class RepositoryTest extends TestCase
     public function testGetEntityManager()
     {
         $class = "Account";
-        $entityManager = $this->createPartialMock(EntityManager::class, ['getEntityManager']);
-        $repository = new Repository($entityManager);
+        $entityManagerMock = $this->createMock(EntityManager::class);
+        $repositoryMock = $this->createPartialMock(Repository::class, ['getEntityManager']);
+        $repositoryMock->method('getEntityManager')->willReturn($entityManagerMock);
+        $repository = new Repository($entityManagerMock);
         $result = $repository->setClassName($class)->getEntityManager();
-        $this->assertTrue($result instanceof $entityManager);
+        $this->assertInstanceOf(EntityManager::class, $result);
     }
 
     public function testSetEntityManager()
     {
         $class = "Account";
-        $entityManager = $this->createPartialMock(EntityManager::class, ['setEntityManager']);
-        $repository = new Repository($entityManager);
-        $result = $repository->setClassName($class)->setEntityManager($this->createMock(EntityManager::class));
-        $this->assertTrue($result instanceof Repository);
+        $entityManagerMock = $this->createMock(EntityManager::class);
+        $repository = new Repository();
+        $result = $repository->setClassName($class)->setEntityManager($entityManagerMock);
+        $this->assertInstanceOf(Repository::class, $result);
     }
 }
